@@ -9,10 +9,10 @@ public class AFD {
 		// alfabeto
 
 		char[] alfabeto = { 'D', 'F', 'N', 'O', 'P', 'S' };
+
 		ArrayList<Character> symbols = new ArrayList<>();
 		for (int i = 0; i < alfabeto.length; i++) {
 			symbols.add(alfabeto[i]);
-			System.out.println(symbols.get(i));
 		}
 
 		int[] row1 = {2, 11, 3, 11, 10, 8};
@@ -42,8 +42,18 @@ public class AFD {
 		estadosFinales.add(9);
 
 //		Aqu� se lee la cadena a revisar si es aceptado por el AFD.
-
-		String myString = "NSNOPNONSNF";
+		String myEquation = "5+4*(2/8+2)";
+		String myString = "";
+		int temp;
+		for(int i = 0; i < myEquation.length(); i++){
+			temp = myEquation.charAt(i);
+			if(temp == 40) myString += "P";
+			if(temp == 41) myString += "F";
+			if(temp == 42 || temp == 47 || temp == 94) myString += "O";
+			if(temp == 46) myString += "D";
+			if(temp >= 48 && temp <= 57) myString += "N";
+			if(temp == 43 || temp == 45) myString += "S";
+		}
 
 		int estado = 0, columna = 0;
 //		Movimiento por la tabla de transiciones siguiendo la lectura de la cadena a revisar.
@@ -64,8 +74,6 @@ public class AFD {
 		}else {
 			System.out.println("Cadena no permitida");
 		}
-
-	// System.out.println("Si deseas salir ingresa -1:");
 	return;
 	}
 
