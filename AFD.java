@@ -48,42 +48,55 @@ public class AFD {
 
 		//Aqui se lee la cadena a revisar si es aceptado por el AFD.
 		
-		//Ecuación dada por el usuario
-		String myEquation = JOptionPane.showInputDialog("Ingrese la palabra:"); //5+4*(2/8+2)
-		//Cadena resultante dada una ecuación
-		String myString = "";
-		//Temporal que recibe cada caracter de la cadena ecuación
-		int temp;
-		for(int i = 0; i < myEquation.length(); i++){
-			temp = myEquation.charAt(i);
-			if(temp == 40) myString += "P";
-			if(temp == 41) myString += "F";
-			if(temp == 42 || temp == 47 || temp == 94) myString += "O";
-			if(temp == 46) myString += "D";
-			if(temp >= 48 && temp <= 57) myString += "N";
-			if(temp == 43 || temp == 45) myString += "S";
-		}
-
-		//Variables necesarias para iterar a través de la matriz de transiciones
-		int estado = 0, columna = 0; 
-		
-		//Movimiento por la tabla de transiciones siguiendo la lectura de la cadena a revisar.
-		for (int j = 0; j < myString.length(); j++) {
-			if(symbols.contains(myString.charAt(j))) {	//Condici�n para revisar que el simbolo le�do pertenezca al alfabeto.							//Condici�n para revisar que el simbolo le�do pertenezca al alfabeto.
-				columna = symbols.indexOf(myString.charAt(j));
-				estado = matrizTransiciones.get(estado)[columna];
-				
-			}else {																	
-				JOptionPane.showMessageDialog(null, "RECHAZADA: La palabra contiene simbolos que no pertenecen al alfabeto" + myString.charAt(j) );
-				break;
+		//Bandera
+		int banderaPalabra = 1;
+		while(banderaPalabra == 1){
+			//Ecuación dada por el usuario
+			String myEquation = JOptionPane.showInputDialog("Ingrese la palabra:"); //5+4*(2/8+2)
+			//Cadena resultante dada una ecuación
+			String myString = "";
+			//Temporal que recibe cada caracter de la cadena ecuación
+			int temp;
+			for(int i = 0; i < myEquation.length(); i++){
+				temp = myEquation.charAt(i);
+				if(temp == 40) myString += "P";
+				if(temp == 41) myString += "F";
+				if(temp == 42 || temp == 47 || temp == 94) myString += "O";
+				if(temp == 46) myString += "D";
+				if(temp >= 48 && temp <= 57) myString += "N";
+				if(temp == 43 || temp == 45) myString += "S";
 			}
+
+			//Variables necesarias para iterar a través de la matriz de transiciones
+			int estado = 0, columna = 0; 
 			
-		}
-//		Bloque para revisar si la cadena fue admitida.			
-		if (estadosFinales.contains(estado)) {										
-			JOptionPane.showMessageDialog(null, "ACEPTADA: Cadena permitida");
-		}else {
-			JOptionPane.showMessageDialog(null, "RECHAZADA: Cadena no permitida");
+			//Movimiento por la tabla de transiciones siguiendo la lectura de la cadena a revisar.
+			for (int j = 0; j < myString.length(); j++) {
+				if(symbols.contains(myString.charAt(j))) {	//Condici�n para revisar que el simbolo le�do pertenezca al alfabeto.							//Condici�n para revisar que el simbolo le�do pertenezca al alfabeto.
+					columna = symbols.indexOf(myString.charAt(j));
+					estado = matrizTransiciones.get(estado)[columna];
+					
+				}else {																	
+					JOptionPane.showMessageDialog(null, "RECHAZADA: La palabra contiene simbolos que no pertenecen al alfabeto" + myString.charAt(j) );
+					break;
+				}
+				
+			}
+			//Bloque para revisar si la cadena fue admitida.			
+			if (estadosFinales.contains(estado)) {										
+				JOptionPane.showMessageDialog(null, "ACEPTADA: Cadena permitida");
+			}else {
+				JOptionPane.showMessageDialog(null, "RECHAZADA: Cadena no permitida");
+			}
+
+			//Preguntar si se desea verificar otra palabra
+			String temp0= JOptionPane.showInputDialog("\n¿Desea ingresar otra palabra? \n -1: si \n -0: no \n").replaceAll(" ","");
+			
+			while(temp0.compareTo("1") != 0 && temp0.compareTo("0") != 0) {
+				//Validación
+				temp0= JOptionPane.showInputDialog("Por favor ingrese 0 o 1").replaceAll(" ","");
+			}
+			banderaPalabra = Integer.parseInt(temp0);
 		}
 	return;
 	}
