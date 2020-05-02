@@ -4,17 +4,18 @@ import java.util.*;
 public class AFD {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		// Creaci�n de la matriz de transiciones y un arreglo de strings para obtener el
-		// alfabeto
-
+		
+		// Alfabeto para AFD
 		char[] alfabeto = { 'D', 'F', 'N', 'O', 'P', 'S' };
-
+		//ArrayList para un manejo mejor de los simbolos del alfabeto
 		ArrayList<Character> symbols = new ArrayList<>();
+		
+		//Llenado de la lista
 		for (int i = 0; i < alfabeto.length; i++) {
 			symbols.add(alfabeto[i]);
 		}
 
+		//Filas para matriz de transiciones
 		int[] row1 = {2, 11, 3, 11, 10, 8};
 		int[] row2 = {11, 11, 1, 0, 11, 0};
 		int[] row3 = {11, 11, 1, 11, 11, 11};
@@ -29,22 +30,29 @@ public class AFD {
 		int[] row12 = {11, 11, 11, 11, 11, 11};
 		int[][] matriz = { row1, row2, row3, row4, row5, row6,
 						   row7, row8, row9, row10, row11, row12};
+		
+		//Numero de estados del AFD
 		short numEstados = 12;
 
+		//Matriz de transiciones
 		ArrayList<int[]> matrizTransiciones = new ArrayList<int[]>();
 		for(int i = 0; i < numEstados; i++){
 			matrizTransiciones.add(matriz[i]);
 		}
 
+		//Lista para consultar si el estado al que se llegó es un estado final
 		ArrayList<Integer> estadosFinales = new ArrayList<>();
 		estadosFinales.add(1);
 		estadosFinales.add(6);
 		estadosFinales.add(9);
 
-//		Aqu� se lee la cadena a revisar si es aceptado por el AFD.
-		String myEquation = JOptionPane.showInputDialog("Ingrese la palabra:");
-		//5+4*(2/8+2)
+		//Aqui se lee la cadena a revisar si es aceptado por el AFD.
+		
+		//Ecuación dada por el usuario
+		String myEquation = JOptionPane.showInputDialog("Ingrese la palabra:"); //5+4*(2/8+2)
+		//Cadena resultante dada una ecuación
 		String myString = "";
+		//Temporal que recibe cada caracter de la cadena ecuación
 		int temp;
 		for(int i = 0; i < myEquation.length(); i++){
 			temp = myEquation.charAt(i);
@@ -56,10 +64,12 @@ public class AFD {
 			if(temp == 43 || temp == 45) myString += "S";
 		}
 
-		int estado = 0, columna = 0;
-//		Movimiento por la tabla de transiciones siguiendo la lectura de la cadena a revisar.
+		//Variables necesarias para iterar a través de la matriz de transiciones
+		int estado = 0, columna = 0; 
+		
+		//Movimiento por la tabla de transiciones siguiendo la lectura de la cadena a revisar.
 		for (int j = 0; j < myString.length(); j++) {
-			if(symbols.contains(myString.charAt(j))) {								//Condici�n para revisar que el simbolo le�do pertenezca al alfabeto.
+			if(symbols.contains(myString.charAt(j))) {	//Condici�n para revisar que el simbolo le�do pertenezca al alfabeto.							//Condici�n para revisar que el simbolo le�do pertenezca al alfabeto.
 				columna = symbols.indexOf(myString.charAt(j));
 				estado = matrizTransiciones.get(estado)[columna];
 				
