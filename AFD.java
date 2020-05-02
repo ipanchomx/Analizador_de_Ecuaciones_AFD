@@ -1,4 +1,4 @@
-
+import javax.swing.JOptionPane;
 import java.util.*;
 
 public class AFD {
@@ -42,7 +42,8 @@ public class AFD {
 		estadosFinales.add(9);
 
 //		Aqu� se lee la cadena a revisar si es aceptado por el AFD.
-		String myEquation = "5+4*(2/8+2)";
+		String myEquation = JOptionPane.showInputDialog("Ingrese la palabra:");
+		//5+4*(2/8+2)
 		String myString = "";
 		int temp;
 		for(int i = 0; i < myEquation.length(); i++){
@@ -63,16 +64,16 @@ public class AFD {
 				estado = matrizTransiciones.get(estado)[columna];
 				
 			}else {																	
-				System.out.println("Simbolo no permitido: " + myString.charAt(j) );
+				JOptionPane.showMessageDialog(null, "RECHAZADA: La palabra contiene simbolos que no pertenecen al alfabeto" + myString.charAt(j) );
 				break;
 			}
 			
 		}
 //		Bloque para revisar si la cadena fue admitida.			
 		if (estadosFinales.contains(estado)) {										
-			System.out.println("Cadena permitida");
+			JOptionPane.showMessageDialog(null, "ACEPTADA: Cadena permitida");
 		}else {
-			System.out.println("Cadena no permitida");
+			JOptionPane.showMessageDialog(null, "RECHAZADA: Cadena no permitida");
 		}
 	return;
 	}
