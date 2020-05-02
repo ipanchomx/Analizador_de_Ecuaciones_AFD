@@ -60,11 +60,15 @@ public class AFD {
 			for(int i = 0; i < myEquation.length(); i++){
 				temp = myEquation.charAt(i);
 				if(temp == 40) myString += "P";
-				if(temp == 41) myString += "F";
-				if(temp == 42 || temp == 47 || temp == 94) myString += "O";
-				if(temp == 46) myString += "D";
-				if(temp >= 48 && temp <= 57) myString += "N";
-				if(temp == 43 || temp == 45) myString += "S";
+				else if(temp == 41) myString += "F";
+				else if(temp == 42 || temp == 47 || temp == 94) myString += "O";
+				else if(temp == 46) myString += "D";
+				else if(temp >= 48 && temp <= 57) myString += "N";
+				else if(temp == 43 || temp == 45) myString += "S";
+				else {																	
+					JOptionPane.showMessageDialog(null, "RECHAZADA: La palabra contiene simbolos que no pertenecen al alfabeto " + myEquation.charAt(i));
+					break;
+				}
 			}
 
 			//Variables necesarias para iterar a través de la matriz de transiciones
@@ -76,11 +80,7 @@ public class AFD {
 					columna = symbols.indexOf(myString.charAt(j));
 					estado = matrizTransiciones.get(estado)[columna];
 					
-				}else {																	
-					JOptionPane.showMessageDialog(null, "RECHAZADA: La palabra contiene simbolos que no pertenecen al alfabeto" + myString.charAt(j) );
-					break;
-				}
-				
+				}	
 			}
 			//Bloque para revisar si la cadena fue admitida.			
 			if (estadosFinales.contains(estado)) {										
