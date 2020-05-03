@@ -4,7 +4,6 @@ import java.util.*;
 public class AFD {
 
 	public static void main(String[] args) {
-		
 		// Alfabeto para AFD
 		char[] alfabeto = { 'D', 'F', 'N', 'O', 'P', 'S' };
 		//ArrayList para un manejo mejor de los simbolos del alfabeto
@@ -14,7 +13,6 @@ public class AFD {
 		for (int i = 0; i < alfabeto.length; i++) {
 			symbols.add(alfabeto[i]);
 		}
-
 		//Filas para matriz de transiciones
 		int[] row1 = {2, 11, 3, 11, 10, 8};
 		int[] row2 = {11, 11, 1, 0, 11, 0};
@@ -43,14 +41,14 @@ public class AFD {
 		//Lista para consultar si el estado al que se llegó es un estado final
 		ArrayList<Integer> estadosFinales = new ArrayList<>();
 		estadosFinales.add(1);
-		estadosFinales.add(6);
+		estadosFinales.add(3);
 		estadosFinales.add(9);
 
 		//Aqui se lee la cadena a revisar si es aceptado por el AFD.
 		
 		//Bandera
-		int banderaPalabra = 1;
-		while(banderaPalabra == 1){
+		int banderaPalabra = 0;
+		while(banderaPalabra == 0){
 			//Ecuación dada por el usuario
 			String myEquation = JOptionPane.showInputDialog("Ingrese la palabra:"); //5+4*(2/8+2)
 			//Cadena resultante dada una ecuación
@@ -88,15 +86,8 @@ public class AFD {
 			}else {
 				JOptionPane.showMessageDialog(null, "RECHAZADA: Cadena no permitida");
 			}
-
-			//Preguntar si se desea verificar otra palabra
-			String temp0= JOptionPane.showInputDialog("\n¿Desea ingresar otra palabra? \n -1: si \n -0: no \n").replaceAll(" ","");
-			
-			while(temp0.compareTo("1") != 0 && temp0.compareTo("0") != 0) {
-				//Validación
-				temp0= JOptionPane.showInputDialog("Por favor ingrese 0 o 1").replaceAll(" ","");
-			}
-			banderaPalabra = Integer.parseInt(temp0);
+			//¿Continuamos revisando ecuaciones?
+			banderaPalabra = JOptionPane.showConfirmDialog(null, "Confirmar", "Ingresar otra palabra", JOptionPane.DEFAULT_OPTION);
 		}
 	return;
 	}
