@@ -3,6 +3,35 @@ import java.util.*;
 
 public class AFD {
 
+	//Función para revisar el balanceo de parentesis y que no haya parentesis vacíos.
+	public static boolean checkParenthesis(String myString){
+		Stack<Character> stack = new Stack<>();
+		char temp;
+		for(int i = 0; i < myString.length(); i++){
+			temp = myString.charAt(i);
+			if(temp == 40) stack.push(temp);
+			if(stack.empty() && temp == 41) return false;
+			if(temp == 41 && stack.peek() == 40){
+				if(myString.charAt(i-1) != 40) stack.pop();
+				else return false;
+			}
+			
+		}
+		if(!stack.empty()) return false;
+		return true;
+	}
+
+	//Función para filtrar la ecuación de parentesis (Deja la ecuación sin parentesis).
+	public static String filterEquation(String myString){
+		char temp;
+		String newString = "";
+		for(int  i = 0; i < myString.length(); i++){
+			temp = myString.charAt(i);
+			if(!(temp == 40 || temp == 41 || temp == 32)) newString += temp;
+		}
+		return newString;
+	}
+
 	public static void main(String[] args) {
 		// Alfabeto para AFD
 		char[] alfabeto = { 'D', 'F', 'N', 'O', 'P', 'S' };
@@ -51,41 +80,48 @@ public class AFD {
 		while(banderaPalabra == 0){
 			//Ecuación dada por el usuario
 			String myEquation = JOptionPane.showInputDialog("Ingrese la palabra:"); //5+4*(2/8+2)
-			//Cadena resultante dada una ecuación
-			String myString = "";
-			//Temporal que recibe cada caracter de la cadena ecuación
-			int temp;
-			for(int i = 0; i < myEquation.length(); i++){
-				temp = myEquation.charAt(i);
-				if(temp == 40) myString += "P";
-				else if(temp == 41) myString += "F";
-				else if(temp == 42 || temp == 47 || temp == 94) myString += "O";
-				else if(temp == 46) myString += "D";
-				else if(temp >= 48 && temp <= 57) myString += "N";
-				else if(temp == 43 || temp == 45) myString += "S";
-				else {																	
-					JOptionPane.showMessageDialog(null, "RECHAZADA: La palabra contiene simbolos que no pertenecen al alfabeto " + myEquation.charAt(i));
-					break;
+
+			if(checkParenthesis(myEquation)){
+				myEquation = filterEquation(myEquation);
+				//Temporal que recibe cada caracter de la cadena ecuación
+				int temp;
+
+				//Cadena resultante dada una ecuación
+				String myString = "";
+				for(int i = 0; i < myEquation.length(); i++){
+					temp = myEquation.charAt(i);
+					if(temp == 40) myString += "P";
+					else if(temp == 41) myString += "F";
+					else if(temp == 42 || temp == 47 || temp == 94) myString += "O";
+					else if(temp == 46) myString += "D";
+					else if(temp >= 48 && temp <= 57) myString += "N";
+					else if(temp == 43 || temp == 45) myString += "S";
+					else {																	
+						JOptionPane.showMessageDialog(null, "RECHAZADA: La palabra contiene simbolos que no pertenecen al alfabeto " + myEquation.charAt(i));
+						break;
+					}
+				}
+
+				//Variables necesarias para iterar a través de la matriz de transiciones
+				int estado = 0, columna = 0; 
+				
+				//Movimiento por la tabla de transiciones siguiendo la lectura de la cadena a revisar.
+				for (int j = 0; j < myString.length(); j++) {
+					if(symbols.contains(myString.charAt(j))) {	//Condici�n para revisar que el simbolo le�do pertenezca al alfabeto.							//Condici�n para revisar que el simbolo le�do pertenezca al alfabeto.
+						columna = symbols.indexOf(myString.charAt(j));
+						estado = matrizTransiciones.get(estado)[columna];
+						
+					}	
+				}
+				//Bloque para revisar si la cadena fue admitida.			
+				if (estadosFinales.contains(estado)) {										
+					JOptionPane.showMessageDialog(null, "ACEPTADA: Cadena permitida");
+				}else {
+					JOptionPane.showMessageDialog(null, "RECHAZADA: Cadena no permitida");
 				}
 			}
+			else JOptionPane.showMessageDialog(null, "RECHAZADA: Cadena no permitida");
 
-			//Variables necesarias para iterar a través de la matriz de transiciones
-			int estado = 0, columna = 0; 
-			
-			//Movimiento por la tabla de transiciones siguiendo la lectura de la cadena a revisar.
-			for (int j = 0; j < myString.length(); j++) {
-				if(symbols.contains(myString.charAt(j))) {	//Condici�n para revisar que el simbolo le�do pertenezca al alfabeto.							//Condici�n para revisar que el simbolo le�do pertenezca al alfabeto.
-					columna = symbols.indexOf(myString.charAt(j));
-					estado = matrizTransiciones.get(estado)[columna];
-					
-				}	
-			}
-			//Bloque para revisar si la cadena fue admitida.			
-			if (estadosFinales.contains(estado)) {										
-				JOptionPane.showMessageDialog(null, "ACEPTADA: Cadena permitida");
-			}else {
-				JOptionPane.showMessageDialog(null, "RECHAZADA: Cadena no permitida");
-			}
 			//¿Continuamos revisando ecuaciones?
 			banderaPalabra = JOptionPane.showConfirmDialog(null, "Confirmar", "Ingresar otra palabra", JOptionPane.DEFAULT_OPTION);
 		}
@@ -93,3 +129,4 @@ public class AFD {
 	}
 
 }
+
